@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/frgReceta"
+    tools:context="com.example.kichi.exu1adminrepos.RecetaFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageButton
+        android:id="@+id/imgFotoReceta"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="centerCrop"
+        tools:src="@mipmap/ic_launcher" />
+
+    <EditText
+        android:id="@+id/txtNombre"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imgFotoReceta"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:ems="10"
+        android:hint="Nombre de receta"
+        android:inputType="textPersonName"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/txtDescripcion"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtNombre"
+        android:layout_below="@+id/txtNombre"
+        android:ems="10"
+        android:hint="Descripcion"
+        android:inputType="textMultiLine"
+        android:maxLines="2"
+        android:minLines="2"
+        android:textStyle="italic" />
+
+    <EditText
+        android:id="@+id/txtIngrediente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Ingrediente"
+        android:inputType="textPersonName"
+        android:layout_below="@+id/txtDescripcion"
+        android:layout_alignStart="@+id/txtDescripcion" />
+
+    <Button
+        android:id="@+id/btnAgregarIngrediente"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txtIngrediente"
+        android:layout_alignEnd="@+id/txtDescripcion"
+        android:text="Agregar" />
+
+    <ScrollView
+        android:layout_width="330dp"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView2"
+        android:layout_below="@+id/txtIngrediente"
+        android:layout_alignStart="@+id/txtIngrediente"
+        android:layout_above="@+id/txtPreparacion">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linearRepos"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/txtPreparacion"
+                android:layout_alignStart="@+id/txtPreparacion"
+                android:layout_below="@+id/txtPreparacion"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/txtPreparacion"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Preparacion"
+        android:inputType="textMultiLine"
+        android:maxLines="4"
+        android:minLines="3"
+        android:layout_above="@+id/btnGuardar"
+        android:layout_alignStart="@+id/txtIngrediente" />
+
+    <Button
+        android:id="@+id/btnGuardar"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Guardar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/scrollView2"
+        android:layout_alignStart="@+id/scrollView2" />
+
+
+</RelativeLayout>
