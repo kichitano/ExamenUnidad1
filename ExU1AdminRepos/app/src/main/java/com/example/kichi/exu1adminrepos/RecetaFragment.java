@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -17,30 +16,27 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Type;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RecetaFragment extends  android.support.v4.app.Fragment {
 
 
-    public ClsConexion con;
     ImageButton btnfotoReceta;
     Button btnagregarIngrediente,btnguardar;
     LinearLayout linearingredientes;
     EditText ingrediente,txtnombre,txtdescripcion,txtpreparacion;
+    public ClsGuardarReceta guardarReceta;
+    public ClsGuardarIngredientes guardarIngredientes;
     private static final int CAMERA_PIC_REQUEST = 1;
     String encodedImage = null;
     private View view;
     int cont = 0;
-
+    List<TextView> ingredientes;
 
     public RecetaFragment() {
         // Required empty public constructor
@@ -52,16 +48,45 @@ public class RecetaFragment extends  android.support.v4.app.Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_receta, container, false);
-
+        ingredientes = new ArrayList<TextView>();
         btnagregarIngrediente = (Button)view.findViewById(R.id.btnAgregarIngrediente);
         linearingredientes = (LinearLayout) view.findViewById(R.id.linearRepos);
         linearingredientes.setOrientation(LinearLayout.VERTICAL);
-        btnguardar = (Button)view.findViewById(R.id.btnGuardar);
+
 
         configImageButton();
         configAgregarIngredientes();
 
-        mtdGuardarReceta();
+        txtnombre = (EditText)view.findViewById(R.id.txtNombre);
+        txtdescripcion = (EditText)view.findViewById(R.id.txtDescripcion);
+        txtpreparacion = (EditText)view.findViewById(R.id.txtPreparacion);
+
+
+        btnguardar = (Button)view.findViewById(R.id.btnGuardar);
+        btnguardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String dato1 = txtnombre.getText().toString();
+                String dato2 = txtdescripcion.getText().toString();
+                String dato3  =txtpreparacion.getText().toString();
+
+                guardarReceta = new ClsGuardarReceta(view.getContext());
+                guardarReceta.guardarReceta(dato1,dato2,dato3,encodedImage);
+
+                String[] ingr = new String[cont];
+                for(int x=0;x<cont;x++){
+                    ingr[x] = ingredientes.get(x).getText().toString();
+                }
+                guardarIngredientes = new ClsGuardarIngredientes(view.getContext());
+                try {
+                    guardarIngredientes.guardaIngrediente(ingr);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                getActivity().getFragmentManager().popBackStack();
+            }
+        });
         return view;
     }
 
@@ -73,10 +98,9 @@ public class RecetaFragment extends  android.support.v4.app.Fragment {
             @Override
             public void onClick(View view) {
 
-
                 TextView ingre = new TextView(getActivity());
+                ingredientes.add(ingre);
                 cont++;
-                ingre.setId(cont);
                 ingre.setText(ingrediente.getText());
                 ingre.setTextSize(16);
                 ingre.setTextColor(Color.BLACK);
@@ -116,46 +140,5 @@ public class RecetaFragment extends  android.support.v4.app.Fragment {
         thumbnail.compress(Bitmap.CompressFormat.JPEG,100, byteArrayOutputStream);
         byte[] byteArray = byteArrayOutputStream.toByteArray();
         encodedImage = Base64.encodeToString(byteArray,Base64.DEFAULT);
-    }
-
-
-
-    private void mtdGuardarReceta() {
-
-        txtnombre = (EditText)view.findViewById(R.id.txtNombre);
-        txtdescripcion = (EditText)view.findViewById(R.id.txtDescripcion);
-        txtpreparacion = (EditText)view.findViewById(R.id.txtPreparacion);
-        final String dato1 = txtnombre.getText().toString();
-        final String dato2 = txtdescripcion.getText().toString();
-        final String dato3  =txtpreparacion.getText().toString();
-
-        btnguardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                String mensaje ="";
-
-                con = new ClsConexion();
-
-                String cadenaSql = "insert into Tb_Recetas values (?,?,?,?)";
-                try{
-                    Connection connection = con.getConnection();
-                    PreparedStatement preparedStatement = connection.prepareStatement(cadenaSql);
-                    preparedStatement.setString(1,dato1);
-                    preparedStatement.setString(2,dato2);
-                    preparedStatement.setString(3,dato3);
-                    preparedStatement.setString(4,encodedImage);
-                    preparedStatement.executeUpdate();
-                    preparedStatement.close();
-                    connection.close();
-                    mensaje = "Resgistro correcto.";
-                    Toast.makeText(view.getContext(),mensaje,Toast.LENGTH_LONG).show();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    mensaje = "Error al registrar.";
-                    Toast.makeText(view.getContext(),mensaje,Toast.LENGTH_LONG).show();
-                }
-            }
-        });
     }
 }

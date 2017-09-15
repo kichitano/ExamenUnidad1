@@ -3,3 +3,5 @@ http://www.hermosaprogramacion.com/2014/09/android-aplicaciones-fragmento/
 http://www.tutorialesprogramacionya.com/javaya/androidya/androidstudioya/detalleconcepto.php?codigo=48&inicio=40
 https://es.stackoverflow.com/questions/2327/cómo-prevenir-volver-a-cargar-el-fragment-visible-en-android
 https://www.programcreek.com/java-api-examples/index.php?api=android.support.v4.app.FragmentTransaction
+http://desarrolloandroidcsharp.blogspot.pe/2016/03/conexion-sql-server-con-android-studio.html
+https://jarroba.com/listview-o-listado-en-android/
